@@ -38,7 +38,7 @@ h1 {
 }
 
 h1 + p {
-    text-align: center;
+    text-align: left;
     font-size: 9pt;
     color: #444;
     margin-bottom: 12pt;
@@ -136,21 +136,27 @@ def main() -> None:
         default="output.pdf",
         help="Destination path for the generated PDF (default: output.pdf)",
     )
+    parser.add_argument(
+        "--header",
+        help="Path to an optional header Markdown file prepended to the input",
+    )
     args = parser.parse_args()
 
     print("Reading markdown...")
     header = ""
-    try:
-        with open("header.md", encoding="utf-8") as f:
-            header = f.read().rstrip() + "\n\n"
-    except FileNotFoundError:
-        pass
-    except PermissionError:
-        print("Error: Permission denied reading: header.md")
-        sys.exit(1)
-    except OSError as e:
-        print(f"Error reading header.md: {e}")
-        sys.exit(1)
+    if args.header:
+        try:
+            with open(args.header, encoding="utf-8") as f:
+                header = f.read().rstrip() + "\n\n"
+        except FileNotFoundError:
+            print(f"Error: Header file not found: {args.header}")
+            sys.exit(1)
+        except PermissionError:
+            print(f"Error: Permission denied reading: {args.header}")
+            sys.exit(1)
+        except OSError as e:
+            print(f"Error reading header file: {e}")
+            sys.exit(1)
 
     try:
         with open(args.input, encoding="utf-8") as f:
