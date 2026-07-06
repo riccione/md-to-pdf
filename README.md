@@ -20,13 +20,18 @@ uv run python main.py input.md -o output.pdf
 
 - **`input.md`** — Path to the Markdown file (required)
 - **`-o, --output`** — Output PDF path (default: `output.pdf`)
+- **`--header`** — Path to an optional header Markdown file prepended to the input
 
-If a `header.md` file exists in the current directory, its content is automatically prepended.
+### Examples
 
-### Example
-
+No header:
 ```bash
 uv run python main.py document.md -o document.pdf
+```
+
+With header:
+```bash
+uv run python main.py body.md --header header.md -o full.pdf
 ```
 
 ## Development
